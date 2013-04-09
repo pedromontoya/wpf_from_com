@@ -1,0 +1,1 @@
+C:\Windows\SysWow64\cscript.exe ShowWindow.vbs
