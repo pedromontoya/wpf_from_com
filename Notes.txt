@@ -3,5 +3,4 @@
 1) Create a WPF windows application project, then convert it to a class library project. 
 2) Create a companion class library project, then flag it as COM accessible. 
 	- Properties -> Application -> assembly info -> make assembly COM visible
-3) Define a COM Interface in COM accessible dll project.
-4) Create COM interface, then class that implements com interface
+4) Create COM interface, then class that implements com interface in companion class.
