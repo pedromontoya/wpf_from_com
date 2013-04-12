@@ -23,10 +23,16 @@ namespace COM
             //The directory where this assembly is located
             var asseblyDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
+            //Assembly dependencies are resolved based on the appDomain application base, this will very based on 
+            //where the COM accessible assembly is invoked from. The fix for this is to register a delegate with 
+            //the assemblyResolve event on the appDomain. This allows you to search for dependent assemblies in other
+            //directories. 
             if (!executingDir.Equals(asseblyDir, StringComparison.InvariantCultureIgnoreCase))
             {
                 AppDomain.CurrentDomain.AssemblyResolve += (object obj, ResolveEventArgs args) =>
                 {
+                    //This simple implementation just looks for dependent assemblies in the list of those
+                    //Referenced by the current executing assembly. 
                     var currentAssembly = Assembly.GetExecutingAssembly();
                     var assemblyReferences = currentAssembly.GetReferencedAssemblies();
 
@@ -34,8 +40,15 @@ namespace COM
                     if (needeAssebly == null)
                         return null;
 
-                    //Check the assembly directory for dependencies
-                    return Assembly.LoadFrom(asseblyDir + @"\" + args.Name +".dll");
+                    //If the referenced assembly is in the 'assemblyDir', return it
+                    var assemblyPath = asseblyDir + @"\" + args.Name +".dll";
+                    if (File.Exists(assemblyPath))
+                    {
+                        return Assembly.LoadFrom(assemblyPath);
+                    }
+
+                    //Still not found
+                    return null;
                 };
             }
         }
@@ -44,9 +57,15 @@ namespace COM
         {
             try
             {
+                //Create the windows application for this AppDomain
                 var application = new Application();
+                
+                //Specify the main window of the Application
                 var mainWindow = new MainWindow();
                 application.MainWindow = mainWindow;
+
+                //Show the main window as a dialog. This will keep the application running until
+                //the open window is closed.
                 application.MainWindow.ShowDialog();
             }
             catch (Exception ex)

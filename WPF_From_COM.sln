@@ -4,7 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{09F90E3E-2462-4675-A4F9-5A9E10650CB4}"
 	ProjectSection(SolutionItems) = preProject
 		InvokeWindow.cmd = InvokeWindow.cmd
-		Notes.txt = Notes.txt
 		ShowWindow.vbs = ShowWindow.vbs
 	EndProjectSection
 EndProject
